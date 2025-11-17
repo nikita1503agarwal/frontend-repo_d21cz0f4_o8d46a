@@ -1,0 +1,62 @@
+{
+  "users": {
+    "demoA": {
+      "uid": "demoA",
+      "name": "Alex",
+      "email": "alex@example.com",
+      "photoUrl": "",
+      "coupleId": "demoCouple",
+      "createdAt": {"_seconds": 0, "_nanoseconds": 0}
+    },
+    "demoB": {
+      "uid": "demoB",
+      "name": "Blake",
+      "email": "blake@example.com",
+      "photoUrl": "",
+      "coupleId": "demoCouple",
+      "createdAt": {"_seconds": 0, "_nanoseconds": 0}
+    }
+  },
+  "couples": {
+    "demoCouple": {
+      "coupleId": "demoCouple",
+      "partnerA": {"uid":"demoA","name":"Alex","photoUrl":""},
+      "partnerB": {"uid":"demoB","name":"Blake","photoUrl":""},
+      "joinCode": "123456",
+      "createdAt": {"_seconds": 0, "_nanoseconds": 0},
+      "status": {"balance": 0, "lastUpdated": {"_seconds": 0, "_nanoseconds": 0}}
+    }
+  },
+  "subcollections": {
+    "couples/demoCouple/expenses": {
+      "e1": {
+        "expenseId": "e1",
+        "amount": 2599,
+        "category": "groceries",
+        "paidBy": "demoA",
+        "note": "Grocery run",
+        "emoji": "🧺",
+        "timestamp": {"_seconds": 1704067200, "_nanoseconds": 0}
+      },
+      "e2": {
+        "expenseId": "e2",
+        "amount": 1800,
+        "category": "coffee",
+        "paidBy": "demoB",
+        "note": "Cafe date",
+        "emoji": "☕️",
+        "timestamp": {"_seconds": 1704153600, "_nanoseconds": 0}
+      }
+    },
+    "couples/demoCouple/goals": {
+      "g1": {
+        "goalId": "g1",
+        "title": "Paris Trip",
+        "targetAmount": 200000,
+        "currentAmount": 35000,
+        "deadline": null,
+        "contributors": [{"uid":"demoA","amount":20000},{"uid":"demoB","amount":15000}]
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isCoupleMember(coupleId) {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/couples/$(coupleId)) && (
+          get(/databases/$(database)/documents/couples/$(coupleId)).data.partnerA.uid == request.auth.uid ||
+          (get(/databases/$(database)/documents/couples/$(coupleId)).data.partnerB != null &&
+           get(/databases/$(database)/documents/couples/$(coupleId)).data.partnerB.uid == request.auth.uid)
+        )
+      );
+    }
+
+    match /users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow create: if isSignedIn() && request.auth.uid == uid;
+      allow update: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /couples/{coupleId} {
+      allow read, update: if isCoupleMember(coupleId);
+      allow create: if isSignedIn();
+
+      match /expenses/{expenseId} {
+        allow read, list: if isCoupleMember(coupleId);
+        allow create: if isCoupleMember(coupleId) && request.resource.data.amount > 0 && request.resource.data.paidBy == request.auth.uid;
+        allow update, delete: if false; // Restrict edits; prefer add-only with correction entries
+      }
+
+      match /goals/{goalId} {
+        allow read, list: if isCoupleMember(coupleId);
+        allow create, update: if isCoupleMember(coupleId);
+      }
+    }
+  }
+}
